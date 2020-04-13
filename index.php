@@ -27,7 +27,6 @@ if(isset($_GET) && isset($_GET['pk'])) {
     <meta charset="UTF-8">
     <title>Document</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
-    
     <script src="script.js"></script>
 </head>
 <body>
@@ -38,7 +37,11 @@ if(isset($_GET) && isset($_GET['pk'])) {
         <input type="number" name="pk" id="pk-search">
         <input type="submit" value="Rechercher">
     </form>
-    
+    <?php
+        if (isset($product) && $product == false):
+    ?>
+        <h3>Une erreur s'est produite, réessayez</h3>
+    <?php endif; ?>
     <form action="index.php" method="post">
         <input type="hidden" name="type" value="create">
         <input type="hidden" name="pk" value="">

@@ -70,9 +70,6 @@ class ProductManager {
             'pk' => $data['pk'],
             'name' => $data['name'],
             'price' =>$data['price'],
-            'vat' => 0,
-            'price_vat' => 0,
-            'price_total' => 0,
             'quantity' => $data['quantity']
         ]);
 
@@ -130,9 +127,6 @@ class ProductManager {
             $data['pk'],
             $data['name'],
             $data['price'],
-            $data['vat'],
-            $data['price_vat'],
-            $data['price_total'],
             $data['quantity']
         );
     }

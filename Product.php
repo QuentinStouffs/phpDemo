@@ -4,19 +4,17 @@ class Product {
     private $pk;
     private $name;
     private $price;
-    private $vat;
+    private $vat = 21;
     private $price_vat;
     private $price_total;
     private $quantity;
     
-    function __construct($pk, $name, $price, $vat, $price_vat, $price_total, $quantity) {
+    function __construct($pk, $name, $price, $quantity) {
         $this->pk = $pk;
         $this->name = $name;
         $this->price = $price;
-        $this->vat = $vat;
-        $this->price_vat = $price_vat;
-        $this->price_total = $price_total;
         $this->quantity = $quantity;
+        $this->calculateVat();
     }
     
     function __get($property) {
@@ -29,5 +27,10 @@ class Product {
         if (property_exists($this, $property)) {
 			$this->$property = $value;
 		}
+    }
+
+    function calculateVat() {
+        $this->price_vat = ($this->price/100)*$this->vat;
+        $this->price_total = $this->price + $this->price_vat;
     }
 }
