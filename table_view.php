@@ -9,7 +9,7 @@
             <td><?= $product->__get('name'); ?></td>
             <td><?= $product->__get('price'); ?></td>
             <td><?= $product->__get('quantity'); ?></td>
-            <td><button type="button" data-id="<?=$product->__get('pk'); ?>" class="delete-btn">DELETE</button></td>
+            <td><button type="button" data-id="<?=$product->__get('pk'); ?>" class="delete-btn">DELETE</button>&nbsp;<button type="button" data-id="<?=$product->__get('pk'); ?>" class="update-btn">UPDATE</button></td>
         </tr>
     <?php endforeach; ?>
 </table>

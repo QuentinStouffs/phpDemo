@@ -19,6 +19,23 @@ $(document).ready(function() {
                 alert("Une erreur s'est produite, réessayez !")
             });
     });
+
+    $('.update-btn').on('click', function() {
+        let pk = $(this).data('id');
+        console.log(pk);
+        $.post('ajax.php', { update: true, pk: pk })
+            .done(function (data) {
+                let product = JSON.parse(data);
+                $("input[name='type']").val('update');
+                $("input[name='pk']").val(product.pk);
+                $("input[name='name']").val(product.name);
+                $("input[name='price']").val(product.price);
+                $("input[name='quantity']").val(product.quantity);
+            })
+            .fail(function () {
+                alert("Une erreur s'est produite, réessayez !")
+            });
+    });
     
     $('#search-form').on('submit', function(event) {
         

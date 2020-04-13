@@ -20,4 +20,17 @@ if(isset($_POST) && isset($_POST['delete'])) {
     }
     echo json_encode($response_array);
 }
+
+if (isset($_POST) && isset($_POST['update'])) {
+    $p = $product_manager->fetch($_POST['pk']);
+    $product = ['pk'=> $p->__get('pk'),
+        'name' => $p->__get('name'),
+        'price' => $p->__get('price'),
+        'vat' => $p->__get('vat'),
+        'price_vat' => $p->__get('price_vat'),
+        'price_total' => $p->__get('price_total'),
+        'quantity' => $p->__get('quantity'),
+        ];
+    echo json_encode($product);
+}
 ?>

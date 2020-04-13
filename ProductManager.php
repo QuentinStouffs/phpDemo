@@ -10,11 +10,28 @@ class ProductManager {
         $this->table = 'products';
         $this->connection = new PDO('mysql:host=localhost;dbname=demo_php', 'root', '');
         $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        
         $this->product_list = array();
     }
-    
+
+    function verif($data){
+        $flag = 0;
+        if (preg_match( '/[!@#$%^&*(),.?":{}|<>]/',$data['name'])) {
+            $flag+=1;
+        }
+        if (!is_numeric($data['price']) && $data['price'] < 0) {
+            $flag += 1;
+        }
+        if (!is_numeric($data['quantity']) && $data['price'] < 0) {
+            $flag += 1;
+        }
+
+        return $flag == 0;
+    }
+
     function save($data) {
+        if(!$this->verif($data)){
+            return false;
+        }
         $data['pk'] = -1;
         $product = $this->create([
             'pk' => $data['pk'],
@@ -43,6 +60,40 @@ class ProductManager {
                 print $e->getMessage();
             }
         } 
+    }
+
+    function update($data) {
+        if(!$this->verif($data)) {
+            return false;
+        }
+        $product = $this->create([
+            'pk' => $data['pk'],
+            'name' => $data['name'],
+            'price' =>$data['price'],
+            'vat' => 0,
+            'price_vat' => 0,
+            'price_total' => 0,
+            'quantity' => $data['quantity']
+        ]);
+
+        if ($product) {
+            try {
+                $statement = $this->connection->prepare(
+                    "UPDATE {$this->table} SET name = ?, price = ?, vat = ?, price_vat = ?, price_total = ?, quantity = ? WHERE pk = ?"
+                );
+                $statement->execute([
+                    $product->__get('name'),
+                    $product->__get('price'),
+                    $product->__get('vat'),
+                    $product->__get('price_vat'),
+                    $product->__get('price_total'),
+                    $product->__get('quantity'),
+                    $product->__get('pk')
+                ]);
+            } catch(PDOException $e) {
+                print $e->getMessage();
+            }
+        }
     }
     
     function fetchAll() {

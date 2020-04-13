@@ -8,6 +8,10 @@ if(isset($_POST) && isset($_POST['type']) && $_POST['type'] == 'create') {
     $product = $product_manager->save($_POST);
 }
 
+if(isset($_POST) && isset($_POST['type']) && $_POST['type'] == 'update') {
+    $product = $product_manager->update($_POST);
+}
+
 if(isset($_GET) && isset($_GET['pk'])) {
     $product = $product_manager->fetch($_GET['pk']);
     $display = 'one';
@@ -37,6 +41,7 @@ if(isset($_GET) && isset($_GET['pk'])) {
     
     <form action="index.php" method="post">
         <input type="hidden" name="type" value="create">
+        <input type="hidden" name="pk" value="">
         <input type="text" name="name">
         <input type="number" name="price" step="0.01">
         <input type="number" name="quantity" min="0">
