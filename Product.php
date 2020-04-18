@@ -1,13 +1,13 @@
 <?php 
 //objet metier - entities
 class Product {
-    private $pk;
-    private $name;
-    private $price;
-    private $vat = 21;
-    private $price_vat;
-    private $price_total;
-    private $quantity;
+    public $pk;
+    public $name;
+    public $price;
+    public $vat = 21;
+    public $price_vat;
+    public $price_total;
+    public $quantity;
     
     function __construct($pk, $name, $price, $quantity) {
         $this->pk = $pk;

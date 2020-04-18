@@ -60,6 +60,7 @@ if(isset($_GET) && isset($_GET['pk'])) {
     
     <?php if($display == 'one') include 'unique_view.php'; ?>
     <?php if($display == 'list') include 'table_view.php'; ?>
+    <h3><a href="users.php">Gérer les utilisateurs</a></h3>
 </body>
 </html>
 

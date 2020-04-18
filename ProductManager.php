@@ -1,15 +1,13 @@
 <?php
+require_once("DbManager.php");
 //dao = data acces object
 //dal = data access layer
-class ProductManager {
-    private $table;
-    private $connection;
+class ProductManager extends DbManager {
     private $product_list;
     
     function __construct() {
+        parent::__construct();
         $this->table = 'products';
-        $this->connection = new PDO('mysql:host=localhost;dbname=demo_php', 'root', '');
-        $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->product_list = array();
     }
 
@@ -44,21 +42,7 @@ class ProductManager {
         ]);
         
         if ($product) {
-            try {
-                $statement = $this->connection->prepare(
-                    "INSERT INTO {$this->table} (name, price, vat, price_vat, price_total, quantity) VALUES (?, ?, ?, ?, ?, ?)"
-                );
-                $statement->execute([
-                    $product->__get('name'),
-                    $product->__get('price'),
-                    $product->__get('vat'),
-                    $product->__get('price_vat'),
-                    $product->__get('price_total'),
-                    $product->__get('quantity')
-                ]);
-            } catch(PDOException $e) {
-                print $e->getMessage();
-            }
+            $this->persist($product);
         } 
     }
 
@@ -74,52 +58,21 @@ class ProductManager {
         ]);
 
         if ($product) {
-            try {
-                $statement = $this->connection->prepare(
-                    "UPDATE {$this->table} SET name = ?, price = ?, vat = ?, price_vat = ?, price_total = ?, quantity = ? WHERE pk = ?"
-                );
-                $statement->execute([
-                    $product->__get('name'),
-                    $product->__get('price'),
-                    $product->__get('vat'),
-                    $product->__get('price_vat'),
-                    $product->__get('price_total'),
-                    $product->__get('quantity'),
-                    $product->__get('pk')
-                ]);
-            } catch(PDOException $e) {
-                print $e->getMessage();
-            }
+            $this->updateTable($product);
         }
     }
     
     function fetchAll() {
-        try {
-            $statement = $this->connection->prepare("SELECT * FROM {$this->table}");
-            $statement->execute();
-            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-            
-            foreach($results as $product) {
-                array_push($this->product_list, $this->create($product));
-            }
-            return $this->product_list;
-            
-        } catch (PDOException $e) {
-            print $e->getMessage();
-        }    
+        $results = $this->fetchAllInArray();
+        foreach($results as $product) {
+            array_push($this->product_list, $this->create($product));
+        }
+        return $this->product_list;
     }
     
     function fetch($pk) {
-        try {
-            $statement = $this->connection->prepare("SELECT * FROM {$this->table} WHERE pk = ?");
-            $statement->execute([$pk]);
-            $result = $statement->fetch(PDO::FETCH_ASSOC);
-            
-            return $this->create($result);
-            
-        } catch (PDOException $e) {
-            print $e->getMessage();
-        }
+
+        return $this->create($this->fetchOne($pk));
     }
     
     function create($data) {
@@ -132,16 +85,7 @@ class ProductManager {
     }
 
     function delete($pk) {
-        try {
-            $statement = $this->connection->prepare("DELETE FROM {$this->table} WHERE pk = ?");
-            $statement->execute([$pk]);
-            if($statement->rowCount() > 0) {
-                return true;
-            }
-        } catch (PDOException $e) {
-            print $e->getMessage();
-        }
-        return false;
+        return $this->erase($pk);
     }
     
     function __get($property) {
