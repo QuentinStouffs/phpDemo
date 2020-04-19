@@ -43,6 +43,7 @@ abstract class DbManager {
 
     function updateTable($object) {
         $values = get_object_vars($object);
+        var_dump($values);
         try {
             $setSql = array();
 
@@ -51,6 +52,7 @@ abstract class DbManager {
             }
 
             $setString = implode(', ', $setSql);
+            var_dump("UPDATE {$this->table} SET {$setString} WHERE pk = :pk");
             $statement = $this->connection->prepare(
                 "UPDATE {$this->table} SET {$setString} WHERE pk = :pk"
             );
