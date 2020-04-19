@@ -1,10 +1,10 @@
 <?php
 class User {
-    private $pk;
-    private $username;
-    private $password;
-    private $createdAt;
-    private $updatedAt;
+    public $pk;
+    public $username;
+    public $password;
+    public $created_at;
+    public $updated_at;
 
     /**
      * User constructor.
@@ -19,8 +19,8 @@ class User {
         $this->pk = $pk;
         $this->username = $username;
         $this->password = $password;
-        $this->createdAt = $createdAt;
-        $this->updatedAt = $updatedAt;
+        $this->created_at = $createdAt;
+        $this->updated_at = $updatedAt;
     }
 
     function __get($property) {

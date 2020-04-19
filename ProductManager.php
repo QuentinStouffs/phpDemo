@@ -83,10 +83,6 @@ class ProductManager extends DbManager {
             $data['quantity']
         );
     }
-
-    function delete($pk) {
-        return $this->erase($pk);
-    }
     
     function __get($property) {
         if (property_exists($this, $property)) {

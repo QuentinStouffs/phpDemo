@@ -71,7 +71,7 @@ abstract class DbManager {
         }
     }
 
-    function erase($pk) {
+    function delete($pk) {
         try {
             $statement = $this->connection->prepare("DELETE FROM {$this->table} WHERE pk = ?");
             $statement->execute([$pk]);
